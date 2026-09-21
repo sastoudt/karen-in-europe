@@ -50,3 +50,6 @@ rsconnect/
 
 # data files
 *.csv
+.positai
+
+*.Rproj
