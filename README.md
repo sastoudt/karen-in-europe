@@ -11,3 +11,5 @@ You will want to make use of the helper functions. You can read these in to your
 
 
 Put your solution in a file that is either called your-name.R or your-name.qmd
+
+Other people are working in this repository, so be sure to commit, pull, then push.
