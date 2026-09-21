@@ -41,6 +41,7 @@ E<-full_names_data_nice %>%
   filter(sex== "Girl") %>%
   filter(year >= 1997) %>% 
   filter( year <= 2014)
+jij
 
 helperCor(name_data, E)
 
