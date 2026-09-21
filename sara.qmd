@@ -3,3 +3,58 @@ title: "sara"
 format: html
 ---
 
+```{r}
+library(readr)
+data <- read_csv("full-names-data-nice.csv")
+```
+
+```{r}
+library(dplyr)
+data %>%
+  filter(name == "Karen", sex == "F") %>%
+  summarize(total = n())
+```
+```{r}
+source("karen-helper-fns.R")
+```
+
+```{r}
+us_karen <- data %>%
+  filter(country == "US", name == "Karen", sex %in% c("Girl", "F")) %>%
+  arrange(year)
+```
+
+```{r}
+england.wales_karen <- data %>%
+  filter(country == "England/Wales", name == "Karen", sex %in% c("Girl", "F")) %>%
+  arrange(year)
+```
+
+```{r}
+scotland_karen <- data %>%
+  filter(country == "Scotland", name == "Karen", sex %in% c("Girl", "F")) %>%
+  arrange(year)
+```
+
+```{r}
+NI_karen <- data %>%
+  filter(country == "Northern Ireland", name == "Karen", sex %in% c("Girl", "F")) %>%
+  arrange(year)
+```
+
+
+```{r}
+#England / Wales
+helperCorLagKaren(england.wales_karen,20,us_karen)
+```
+
+```{r}
+#Scotland
+helperCorLagKaren(us_karen,20,scotland_karen)
+```
+
+```{r}
+#NI 
+helperCorLagKaren(us_karen,20,NI_karen)
+```
+
