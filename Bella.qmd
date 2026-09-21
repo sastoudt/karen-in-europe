@@ -1,0 +1,37 @@
+---
+title: "Bella Luzak"
+date: "Sept 21, 2026"
+format: html
+editor: visual
+---
+
+
+Task: Find the correlation with US Karen data and the other three countries in the future 40 years. (assume only female Karens)
+
+```{r}
+library(dplyr)
+
+source("karen-helper-fns.R")
+```
+
+
+```{r}
+full_names_data_nice %>%
+  filter(sex = "Girl") %>%
+```
+
+
+```{r}
+helperCorLagKaren <- function(name_data, lagN, karen_data) {
+  tryCatch(cor(name_data$prop, lag(karen_data$prop, lagN), method = "kendall", use = "complete.obs"), error = function(i) {
+    return(NA)
+  })
+}
+
+
+helperCorLagKaren(full_names_data_nice, 40, karen_data)
+
+
+
+```
+
