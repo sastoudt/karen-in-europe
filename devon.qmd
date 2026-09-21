@@ -4,9 +4,11 @@ format: html
 editor: visual
 ---
 
+# Add necessary libraries and helper functions 
 ```{r}
 library(readr)
 library(tidyverse)
+source("karen-helper-fns.R")
 ```
 
 # Read in data
