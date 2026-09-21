@@ -4,23 +4,66 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
 ```{r}
-1 + 1
+library(readr)
+library(tidyverse)
 ```
 
-You can add options to executable code like this
+# Read in data
 
 ```{r}
-#| echo: false
-2 * 2
+karen <- read.csv("full-names-data-nice.csv")
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+# Find Correlation for Devon
+
+```{r}
+# Filter down to male Devons in USA
+devon_us <- karen %>%
+  filter(name == "Devon", sex == "Boy", country == "United States")
+
+# Filter down to male Devons in England/Wales
+devon_eng <- karen %>%
+  filter(name == "Devon", sex == "Boy", country == "England/Wales")
+
+# Find the years which both dfs have in common
+common_yrs_devon <- Reduce(intersect, list(unique(devon_us$year), unique(devon_eng$year)))
+
+# Filter Devons in US to just common years
+devon_us <- devon_us %>%
+  filter(year %in% common_yrs_devon)
+
+# Filter Devons in England/Wales to just common years
+devon_eng <- devon_eng %>%
+  filter(year %in% common_yrs_devon)
+
+# Find correlation
+helperCor(devon_us, devon_eng)
+```
+
+# Find Correlation for Jordan
+
+```{r}
+# Filter down to male Jordans in USA
+jordan_us <- karen %>%
+  filter(name == "Jordan", sex == "Girl", country == "United States")
+
+# Filter down to male Jordans in England/Wales  
+jordan_eng <- karen %>%
+  filter(name == "Jordan", sex == "Girl", country == "England/Wales")
+
+# Find the years which both dfs have in common
+common_yrs_jordan <- Reduce(intersect, list(unique(jordan_us$year), unique(jordan_eng$year)))
+
+# Filter Jordans in US to just common years
+jordan_us <- jordan_us %>%
+  filter(year %in% common_yrs_jordan)
+
+# Filter Jordans in England/Wales to just common years
+devon_eng <- jordan_eng %>%
+  filter(year %in% common_yrs_jordan)
+
+# Find correlation
+helperCor(jordan_us, jordan_eng)
+```
+
