@@ -5,7 +5,6 @@ format: html
 editor: visual
 ---
 
-
 Task: Find the correlation with US Karen data and the other three countries in the future 40 years. (assume only female Karens)
 
 ```{r}
@@ -14,11 +13,6 @@ library(dplyr)
 source("karen-helper-fns.R")
 ```
 
-
-```{r}
-full_names_data_nice %>%
-  filter(sex = "Girl") %>%
-```
 
 
 ```{r}
@@ -31,7 +25,43 @@ helperCorLagKaren <- function(name_data, lagN, karen_data) {
 
 helperCorLagKaren(full_names_data_nice, 40, karen_data)
 
-
+US karen females, compare at each country Karen females (one at a time)
 
 ```
+
+
+```{r}
+data_US <- full_names_data_nice %>%
+  filter(country == "United States", name == "Karen", sex == "Girl")
+
+data_US
+
+
+data_england <- full_names_data_nice %>%
+  filter(country == "England/Wales", name == "Karen", sex == "Girl")
+
+data_england
+
+
+data_scotland <- full_names_data_nice %>%
+  filter(country == "Scotland", name == "Karen", sex == "Girl")
+
+data_scotland
+
+
+data_northern_ireland <- full_names_data_nice %>%
+  filter(country == "Northern Ireland", name == "Karen", sex == "Girl")
+
+data_northern_ireland
+```
+
+```{r}
+helperCorLagKaren(data_US, 40, data_england)
+
+helperCorLagKaren(data_US, 40, data_scotland)
+
+helperCorLagKaren(data_US, 40, data_northern_ireland)
+```
+
+
 
