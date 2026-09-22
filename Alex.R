@@ -18,7 +18,7 @@ name_data<-full_names_data_nice %>%
   filter(name== "Karen")%>%
   filter(sex== "F") %>%
   filter(year >= 1997) %>% 
-  filter( year <= 2014)
+  filter( year <= 2008)
   
 
 SC<- full_names_data_nice %>%
@@ -26,22 +26,27 @@ SC<- full_names_data_nice %>%
   filter(name== "Karen")%>%
   filter(sex== "Girl") %>%
   filter(year >= 1997) %>% 
-  filter( year <= 2014)
+  filter( year <= 2008)
 
 NI<-full_names_data_nice %>%
   filter(country== "Nothern Ireland")%>%
   filter(name== "Karen")%>%
   filter(sex== "Girl") %>%
   filter(year >= 1997) %>% 
-  filter( year <= 2014)
+  filter( year <= 2008)
 
 E<-full_names_data_nice %>%
   filter(country== "England/Wales")%>%
   filter(name== "Karen")%>%
   filter(sex== "Girl") %>%
   filter(year >= 1997) %>% 
-  filter( year <= 2014)
-jij
+  filter( year <= 2008) 
+
+unique(name_data$year)
+unique(NI$year)
+unique(SC$year)
+unique(E$year)
 
 helperCor(name_data, E)
-
+helperCor(name_data, NI)
+helperCor(name_data, SC)
