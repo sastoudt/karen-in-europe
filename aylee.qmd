@@ -1,0 +1,40 @@
+---
+title: "aylee"
+format: html
+---
+
+
+
+```{r}
+library(dplyr)
+library(readr)
+data <- read_csv("full-names-data-nice.csv")
+```
+```{r}
+helperCor <- function(name_data, karen_data) {
+  cor(name_data$prop, karen_data$prop, method = "kendall", use = "complete.obs")
+}
+```
+
+```{r}
+aylee_us_data <- data %>%
+  filter(name == "Aylee") %>%
+  filter(country == "United States") %>%
+  filter(sex == "F")
+  
+aylee_us_data
+
+bella_scot_data <- data %>%
+  filter(name == "Bella") %>%
+  filter(country == "Scotland")%>%
+  filter(sex == "Girl")
+
+```
+
+
+
+
+
+
+
+
