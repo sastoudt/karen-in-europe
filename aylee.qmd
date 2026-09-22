@@ -18,16 +18,24 @@ helperCor <- function(name_data, karen_data) {
 
 ```{r}
 aylee_us_data <- data %>%
-  filter(name == "Aylee") %>%
-  filter(country == "United States") %>%
-  filter(sex == "F")
+  filter(name == "Aylee", country == "United States", sex == "F")
   
-aylee_us_data
+aylee_scot_data <- data %>%
+  filter(name == "Aylee", country == "Scotland", sex == "Girl")
+
+##No correlation, no overlap in years
+
+bella_us_data <- data %>%
+  filter(name == "Bella",country == "United States",sex == "F")
 
 bella_scot_data <- data %>%
-  filter(name == "Bella") %>%
-  filter(country == "Scotland")%>%
-  filter(sex == "Girl")
+  filter(name == "Bella",country == "Scotland",sex == "Girl") %>%
+  filter(year == 2018:2024)
+
+helperCor(bella_us_data, bella_scot_data)
+
+## Corr = 0.52
+  
 
 ```
 
