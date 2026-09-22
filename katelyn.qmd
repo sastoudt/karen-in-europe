@@ -4,23 +4,48 @@ format: typst
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## Find the correlation with US Karen data and the other three countries in the future 50 years. (assume only female Karens)
 
 ```{r}
-1 + 1
+library(dplyr)
+data <- full_names_data_nice
 ```
-
-You can add options to executable code like this
 
 ```{r}
-#| echo: false
-2 * 2
+helperCorLagKaren <- function(name_data, lagN, karen_data) {
+  tryCatch(cor(name_data$prop, lag(karen_data$prop, lagN), method = "kendall", use = "complete.obs"), error = function(i) {
+    return(NA)
+  })
+}
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+data_united_states <- data %>% filter(country == "United States", name == "Karen", sex == "Girl")
+```
+
+```{r}
+data_england_wales <- data %>% filter(country == "England/Wales", name == "Karen", sex == "Girl")
+```
+
+```{r}
+data_scotland <- data %>% filter(country == "Scotland", name == "Karen", sex == "Girl")
+```
+
+```{r}
+data_northern_irerland <- data %>% filter(country == "Nothern Ireland", name == "Karen", sex == "Girl")
+```
+
+```{r}
+helperCorLagKaren(data_united_states, 50, data_england_wales)
+```
+```{r}
+helperCorLagKaren(data_united_states, 50, data_scotland)
+```
+
+```{r}
+helperCorLagKaren(data_united_states, 50, data_northern_irerland)
+```
+
+
+
+

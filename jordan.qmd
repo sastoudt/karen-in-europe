@@ -3,3 +3,37 @@ title: "jordan"
 format: html
 ---
 
+# Issue 5 : Find the correlation with US Karen data and the other three countries in the future 60 years. (assume only female Karens)
+
+# Package
+```{r}
+library(tidyverse)
+library(here)
+```
+
+
+# Read in Data 
+```{r}
+data <- read.csv(here("full-names-data-nice.csv"))
+```
+
+
+#Find Corr 
+```{r}
+helperCorLagOther(data %>% filter(country == "US" & 
+                                    Name == "Karen" & 
+                                    Sex == "Girl"), 
+                  60, 
+                  data %>% filter(Name == "Karen" & 
+                                    Sex == "Girl")) 
+
+
+helperCorLagKaren(data %>% filter(country == "US" & 
+                                    Name == "Karen" & 
+                                    Sex == "Girl"), 
+                  60, 
+                  data %>% filter(Name == "Karen" & 
+                                    Sex == "Girl")) 
+
+```
+
