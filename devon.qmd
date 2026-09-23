@@ -29,18 +29,18 @@ devon_eng <- karen %>%
   filter(name == "Devon", sex == "Boy", country == "England/Wales")
 
 # Find the years which both dfs have in common
-common_yrs_devon <- Reduce(intersect, list(unique(devon_us$year), unique(devon_eng$year)))
+common_yrs_devon <- inner_join(x = devon_us, y = devon_eng, by = c("year"))
 
-# Filter Devons in US to just common years
-devon_us <- devon_us %>%
-  filter(year %in% common_yrs_devon)
+# Filter to Devons USA Proportions
+devon_us_props <- common_yrs_devon %>%
+  select(prop.x)
 
-# Filter Devons in England/Wales to just common years
-devon_eng <- devon_eng %>%
-  filter(year %in% common_yrs_devon)
+# Filter to Devons England/Wales Proportions
+devon_eng_props <- common_yrs_devon %>%
+  select(prop.y)
 
 # Find correlation
-helperCor(devon_us, devon_eng)
+helperCor(devon_us_props, devon_eng_props)
 ```
 
 # Find Correlation for Jordan
@@ -55,17 +55,17 @@ jordan_eng <- karen %>%
   filter(name == "Jordan", sex == "Girl", country == "England/Wales")
 
 # Find the years which both dfs have in common
-common_yrs_jordan <- Reduce(intersect, list(unique(jordan_us$year), unique(jordan_eng$year)))
+common_yrs_jordan <- inner_join(x = jordan_us, y = jordan_eng, by = c("year"))
 
-# Filter Jordans in US to just common years
-jordan_us <- jordan_us %>%
-  filter(year %in% common_yrs_jordan)
+# Filter to Jordans USA Proportions
+jordan_us_props <- common_yrs_jordan %>%
+  select(prop.x)
 
-# Filter Jordans in England/Wales to just common years
-devon_eng <- jordan_eng %>%
-  filter(year %in% common_yrs_jordan)
+# Filter to Jordans England/Wales Proportions
+jordan_eng_props <- common_yrs_jordan %>%
+  select(prop.y)
 
 # Find correlation
-helperCor(jordan_us, jordan_eng)
+helperCor(jordan_us_props, jordan_eng_props)
 ```
 
