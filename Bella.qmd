@@ -16,17 +16,36 @@ source("karen-helper-fns.R")
 
 
 ```{r}
+# helper function 1
+help_line_up <- function(other_country_karen, karen_us) {
+  name_of_us <- karen_us$country[1]
+  name_of_other_country <- other_country_karen$country[1]
+  try_this <- full_join(other_country_karen, karen_us, by = c("year"))
+
+  karen_nice <- try_this %>%
+    select(year, name.y, prop.y, country.y)
+
+  names(karen_nice)[2:4] <- c("name", "prop", "country")
+  karen_nice$country[which(is.na(karen_nice$country))] <- name_of_us
+
+  other_nice <- try_this %>%
+    select(year, name.x, prop.x, country.x)
+
+  names(other_nice)[2:4] <- c("name", "prop", "country")
+  other_nice$country[which(is.na(other_nice$country))] <- name_of_other_country
+
+  toReturn <- rbind(karen_nice, other_nice)
+  toReturn$name <- rep("Karen", nrow(toReturn))
+  return(toReturn)
+}
+
+
+# helper function 2
 helperCorLagKaren <- function(name_data, lagN, karen_data) {
   tryCatch(cor(name_data$prop, lag(karen_data$prop, lagN), method = "kendall", use = "complete.obs"), error = function(i) {
     return(NA)
   })
 }
-
-
-helperCorLagKaren(full_names_data_nice, 40, karen_data)
-
-US karen females, compare at each country Karen females (one at a time)
-
 ```
 
 
