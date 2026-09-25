@@ -20,20 +20,43 @@ data <- read.csv(here("full-names-data-nice.csv"))
 
 #Find Corr 
 ```{r}
-helperCorLagOther(data %>% filter(country == "US" & 
-                                    Name == "Karen" & 
-                                    Sex == "Girl"), 
-                  60, 
-                  data %>% filter(Name == "Karen" & 
-                                    Sex == "Girl")) 
+data <- data %>% 
+  rename_with(tolower)
 
+#US to england/wales '
+stat_306 <- help_line_up(data %>% filter(country == "England/Wales" &
+                    name == "Karen" &
+                    sex == "Girl"), 
+            data %>% filter(country == "US" &
+                    name == "Karen" &
+                    sex == "Girl") )
 
-helperCorLagKaren(data %>% filter(country == "US" & 
-                                    Name == "Karen" & 
-                                    Sex == "Girl"), 
-                  60, 
-                  data %>% filter(Name == "Karen" & 
-                                    Sex == "Girl")) 
+helperCorLagKaren(
+  stat_306 %>% filter(county == "US"),
+  60,
+  stat_306 %>% filter(country == "England/Wales")
+) 
 
+#US with NI 
+helperCorLagKaren(
+  data %>% filter(country == "US" &
+                    Name == "Karen" &
+                    Sex == "Girl"),
+  60,
+  data %>% filter(country == "Northern Ireland" &
+                    Name == "Karen" &
+                    Sex == "Girl")
+) 
+# US with Scotland 
+helperCorLagKaren(
+  data %>% filter(country == "US" &
+                    Name == "Karen" &
+                    Sex == "Girl"),
+  60,
+  data %>% filter(country == "Scotland" &
+                    Name == "Karen" &
+                    Sex == "Girl")
+) 
 ```
+
 

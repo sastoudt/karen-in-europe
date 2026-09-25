@@ -16,52 +16,131 @@ source("karen-helper-fns.R")
 
 
 ```{r}
+# helper function 1
+help_line_up <- function(other_country_karen, karen_us) {
+  name_of_us <- karen_us$country[1]
+  name_of_other_country <- other_country_karen$country[1]
+  try_this <- full_join(other_country_karen, karen_us, by = c("year"))
+
+  karen_nice <- try_this %>%
+    select(year, name.y, prop.y, country.y)
+
+  names(karen_nice)[2:4] <- c("name", "prop", "country")
+  karen_nice$country[which(is.na(karen_nice$country))] <- name_of_us
+
+  other_nice <- try_this %>%
+    select(year, name.x, prop.x, country.x)
+
+  names(other_nice)[2:4] <- c("name", "prop", "country")
+  other_nice$country[which(is.na(other_nice$country))] <- name_of_other_country
+
+  toReturn <- rbind(karen_nice, other_nice)
+  toReturn$name <- rep("Karen", nrow(toReturn))
+  return(toReturn)
+}
+
+
+# helper function 2
 helperCorLagKaren <- function(name_data, lagN, karen_data) {
   tryCatch(cor(name_data$prop, lag(karen_data$prop, lagN), method = "kendall", use = "complete.obs"), error = function(i) {
     return(NA)
   })
 }
-
-
-helperCorLagKaren(full_names_data_nice, 40, karen_data)
-
-US karen females, compare at each country Karen females (one at a time)
-
 ```
 
 
 ```{r}
+# data sets for female karens
 data_US <- full_names_data_nice %>%
   filter(country == "United States", name == "Karen", sex == "Girl")
-
-data_US
-
 
 data_england <- full_names_data_nice %>%
   filter(country == "England/Wales", name == "Karen", sex == "Girl")
 
-data_england
-
-
 data_scotland <- full_names_data_nice %>%
   filter(country == "Scotland", name == "Karen", sex == "Girl")
 
-data_scotland
-
-
 data_northern_ireland <- full_names_data_nice %>%
   filter(country == "Northern Ireland", name == "Karen", sex == "Girl")
+```
 
-data_northern_ireland
+
+```{r}
+# line up US data w each country
+US_england <- help_line_up(data_england, data_US)
+
+US_scotland <- help_line_up(data_scotland, data_US)
+
+US_northern_ireland <- help_line_up(data_northern_ireland, data_US)
+```
+
+
+```{r}
+# England/Wales correlations for 0-40 year lags
+
+data_US_england <- data_US %>%
+  filter(year %in% data_england$year) %>%
+  arrange(year)
+
+data_england2 <- data_england %>%
+  filter(year %in% data_US$year)
+
+cor_england <- sapply(0:40, function(lagN) {
+  helperCorLagKaren(data_england2, lagN, data_US_england)
+})
 ```
 
 ```{r}
-helperCorLagKaren(data_US, 40, data_england)
+# Scotland correlations for 0-40 year lags
 
-helperCorLagKaren(data_US, 40, data_scotland)
+data_US_scotland <- data_US %>%
+  filter(year %in% data_scotland$year) %>%
+  arrange(year)
 
-helperCorLagKaren(data_US, 40, data_northern_ireland)
+data_scotland2 <- data_scotland %>%
+  filter(year %in% data_US$year)
+
+cor_scotland <- sapply(0:40, function(lagN) {
+  helperCorLagKaren(data_scotland2, lagN, data_US_scotland)
+})
 ```
+
+
+```{r}
+# Northern Ireland correlations for 0-40 year lags
+
+data_US_northern_ireland <- data_US %>%
+  filter(year %in% data_northern_ireland$year) %>%
+  arrange(year)
+
+data_northern_ireland2 <- data_northern_ireland %>%
+  filter(year %in% data_US$year)
+
+cor_northern_ireland <- sapply(0:40, function(lagN) {
+  helperCorLagKaren(data_northern_ireland2, lagN, data_US_northern_ireland)
+})
+```
+
+
+
+```{r}
+correlations <- data.frame(
+  lag = 0:40,
+  England_Wales = cor_england,
+  Scotland = cor_scotland,
+  Northern_Ireland = cor_northern_ireland
+)
+
+correlations
+```
+
+
+
+
+
+
+
+
 
 
 

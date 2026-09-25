@@ -32,20 +32,77 @@ data_scotland <- data %>% filter(country == "Scotland", name == "Karen", sex == 
 ```
 
 ```{r}
-data_northern_irerland <- data %>% filter(country == "Nothern Ireland", name == "Karen", sex == "Girl")
+data_northern_ireland <- data %>% filter(country == "Northern Ireland", name == "Karen", sex == "Girl")
 ```
 
 ```{r}
-helperCorLagKaren(data_united_states, 50, data_england_wales)
+help_line_up <- function(other_country_karen, karen_us) {
+  name_of_us <- karen_us$country[1]
+  name_of_other_country <- other_country_karen$country[1]
+  try_this <- full_join(other_country_karen, karen_us, by = c("year"))
+
+  karen_nice <- try_this %>%
+    select(year, name.y, prop.y, country.y)
+
+  names(karen_nice)[2:4] <- c("name", "prop", "country")
+  karen_nice$country[which(is.na(karen_nice$country))] <- name_of_us
+
+  other_nice <- try_this %>%
+    select(year, name.x, prop.x, country.x)
+
+  names(other_nice)[2:4] <- c("name", "prop", "country")
+  other_nice$country[which(is.na(other_nice$country))] <- name_of_other_country
+
+  toReturn <- rbind(karen_nice, other_nice)
+  toReturn$name <- rep("Karen", nrow(toReturn))
+  return(toReturn)
+}
 ```
+
 ```{r}
-helperCorLagKaren(data_united_states, 50, data_scotland)
+northern_ireland_usa <- help_line_up(data_northern_ireland, data_united_states)
 ```
 
 ```{r}
-helperCorLagKaren(data_united_states, 50, data_northern_irerland)
+england_wales_usa <- help_line_up(data_scotland, data_united_states)
 ```
 
+```{r}
+scotland_usa <- help_line_up(data_england_wales, data_united_states)
+```
 
+```{r}
+data_northern_ireland <- northern_ireland_usa %>% filter(country == "Northern Ireland") %>% arrange(year)
+```
 
+```{r}
+data_united_states_ni <- northern_ireland_usa %>% filter(country == "United States") %>% arrange(year)
+```
 
+```{r}
+data_england_wales <- england_wales_usa %>% filter(country == "England/Wales") %>% arrange(year)
+```
+
+```{r}
+data_united_states_ew <- england_wales_usa %>% filter(country == "United States") %>% arrange(year)
+```
+
+```{r}
+data_scotland <- scotland_usa %>% filter(country == "Scottland") %>% arrange(year)
+```
+
+```{r}
+data_united_states_scotland <- scotland_usa %>% filter(country == "United States") %>% arrange(year)
+```
+
+```{r}
+helperCorLagKaren(data_united_states_ew, 50, data_england_wales)
+```
+
+```{r}
+helperCorLagKaren(data_united_states_scotland, 50, data_scotland)
+```
+
+```{r}
+helperCorLagKaren(data_united_states_ni, 50, data_northern_irerland)
+```
