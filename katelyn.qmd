@@ -13,6 +13,7 @@ data <- full_names_data_nice
 
 ```{r}
 helperCorLagKaren <- function(name_data, lagN, karen_data) {
+  #browser()
   tryCatch(cor(name_data$prop, lag(karen_data$prop, lagN), method = "kendall", use = "complete.obs"), error = function(i) {
     return(NA)
   })
@@ -64,11 +65,11 @@ northern_ireland_usa <- help_line_up(data_northern_ireland, data_united_states)
 ```
 
 ```{r}
-england_wales_usa <- help_line_up(data_scotland, data_united_states)
+scotland_usa <- help_line_up(data_scotland, data_united_states)
 ```
 
 ```{r}
-scotland_usa <- help_line_up(data_england_wales, data_united_states)
+england_wales_usa <- help_line_up(data_england_wales, data_united_states)
 ```
 
 ```{r}
@@ -88,7 +89,7 @@ data_united_states_ew <- england_wales_usa %>% filter(country == "United States"
 ```
 
 ```{r}
-data_scotland <- scotland_usa %>% filter(country == "Scottland") %>% arrange(year)
+data_scotland <- scotland_usa %>% filter(country == "Scotland") %>% arrange(year)
 ```
 
 ```{r}
@@ -104,5 +105,5 @@ helperCorLagKaren(data_united_states_scotland, 50, data_scotland)
 ```
 
 ```{r}
-helperCorLagKaren(data_united_states_ni, 50, data_northern_irerland)
+helperCorLagKaren(data_united_states_ni, 50, data_northern_ireland)
 ```
