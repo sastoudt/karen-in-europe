@@ -3,3 +3,39 @@ title: "connor"
 format: html
 ---
 
+# Task 
+
+Find the correlation with US Karen data and the other three countries in the future 30 years. (assume only female karens)
+
+# Imports
+
+```{r}
+library(tidyverse)
+source("karen-helper-fns.R")
+
+karens = read_csv("full-names-data-nice.csv")
+```
+
+# Get Only Female Karens for US and Europe
+
+```{r}
+us_karens = karens %>%
+  filter(country == "United States" &
+           sex == "Girl" &
+           name == "Karen")
+
+europe_karens = karens %>%
+  filter(country != "United States" &
+           sex == "Girl" &
+           name == "Karen")
+```
+
+# Visualize Correlation For Each in Numbers
+
+```{r}
+ggplot() +
+  geom_line(data = )
+```
+
+
+
