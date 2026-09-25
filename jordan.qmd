@@ -26,24 +26,26 @@ data <- data %>%
 us_df <- data %>% 
   filter(country == "US" &
            name == "Karen" &
-           sex == "Girl")
+           sex == "Girl") %>% 
+  arrange(year)
 
 #US to england/wales 
 karen_ew_df <- data %>% 
   filter(country == "England/Wales" &
            name == "Karen" &
-           sex == "Girl")
+           sex == "Girl") %>% 
+  arrange(year)
 
 #US to england/wales 
 us_ew_line_up <- help_line_up(karen_ew_df, us_df)
 
 us_ew_line_up <- us_ew_line_up %>% arrange(year)
 
-us_df_2 <- us_ew_line_up%>% filter(country == "US")
-ew_df_2 <- us_ew_line_up%>% filter(country == "England/Wales")
+us_df_2 <- us_ew_line_up%>% filter(country == "US") %>% arrange(year)
+ew_df_2 <- us_ew_line_up%>% filter(country == "England/Wales") %>% arrange(year)
 
-helperCorLagKaren(us_df_2, 60, ew_df_2)
-
+helperCorLagKaren(us_df_2, 28, ew_df_2)
+helperCorLagKaren(ew_df_2, 60, us_df_2)
 
 
 
