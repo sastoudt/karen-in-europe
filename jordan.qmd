@@ -22,20 +22,31 @@ data <- read.csv(here("full-names-data-nice.csv"))
 ```{r}
 data <- data %>% 
   rename_with(tolower)
+# US DF 
+us_df <- data %>% 
+  filter(country == "US" &
+           name == "Karen" &
+           sex == "Girl")
 
-#US to england/wales '
-stat_306 <- help_line_up(data %>% filter(country == "England/Wales" &
-                    name == "Karen" &
-                    sex == "Girl"), 
-            data %>% filter(country == "US" &
-                    name == "Karen" &
-                    sex == "Girl") )
+#US to england/wales 
+karen_ew_df <- data %>% 
+  filter(country == "England/Wales" &
+           name == "Karen" &
+           sex == "Girl")
 
-helperCorLagKaren(
-  stat_306 %>% filter(county == "US"),
-  60,
-  stat_306 %>% filter(country == "England/Wales")
-) 
+#US to england/wales 
+us_ew_line_up <- help_line_up(karen_ew_df, us_df)
+
+us_ew_line_up <- us_ew_line_up %>% arrange(year)
+
+us_df_2 <- us_ew_line_up%>% filter(country == "US")
+ew_df_2 <- us_ew_line_up%>% filter(country == "England/Wales")
+
+helperCorLagKaren(us_df_2, 60, ew_df_2)
+
+
+
+
 
 #US with NI 
 helperCorLagKaren(
