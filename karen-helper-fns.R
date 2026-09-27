@@ -23,6 +23,7 @@ helperCorLagOther <- function(name_data, lagN, karen_data) {
 ## lagN: number of years to lag
 ## karen_data: subset of names dataset of karen from one country (assumes only females) 
 helperCorLagKaren <- function(name_data, lagN, karen_data) {
+  browser()
   tryCatch(cor(name_data$prop, lag(karen_data$prop, lagN), method = "kendall", use = "complete.obs"), error = function(i) {
     return(NA)
   })
