@@ -24,18 +24,59 @@ us_karens = karens %>%
            sex == "Girl" &
            name == "Karen")
 
-europe_karens = karens %>%
-  filter(country != "United States" &
+ni_karens = karens %>%
+  filter(country == "ni" &
+           sex == "Girl" &
+           name == "Karen")
+
+scotland_karens = karens %>%
+  filter(country == "scotland" &
+           sex == "Girl" &
+           name == "Karen")
+
+england_wales_karens = karens %>%
+  filter(country == "England/Wales" &
            sex == "Girl" &
            name == "Karen")
 ```
 
-# Visualize Correlation For Each in Numbers
+# Visualize and Find Correlation For Each in Numbers
+
+```{r}
+us_karens = us_karens %>%
+  filter(us_karens$year %in% 1974:2024)
+
+range(us_karens$year)
+```
+
+# Find Correlation
+
+```{r}
+
+```
+
+# Visualize
 
 ```{r}
 ggplot() +
-  geom_line(data = )
+  geom_point(data = us_karens, aes(x = year, y = number, color = "United States")) +
+  geom_point(data = scotland_karens, aes(x = year, y = number, color = "Scotland")) + 
+  geom_point(data = england_wales_karens, aes(x = year, y = number, color = "England & Wales")) + 
+  geom_point(data = ni_karens, aes(x = year, y = number, color = "Northern Ireland")) +
+  scale_color_manual(
+    values = c("United States" = "red", "Scotland" = "blue", "England & Wales" = "green", "Northern Ireland" = "orange")
+  ) +
+  labs(color = "Place of Birth", 
+       y = "Number of Births",
+       x = "Year", 
+       title = "Number of Births by Year for Female Karens from 1974 to 2024 (n = 223)") +
+  theme_minimal()
 ```
 
+# Find Correlation 
+
+```{r}
+
+```
 
 
