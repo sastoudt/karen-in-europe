@@ -3,3 +3,81 @@ title: "sam"
 format: html
 ---
 
+```{r}
+## Correlation with US Karen data for the most recent 10 shared years
+
+karen_10_years <- full_data %>%
+  filter(
+    Name == "Karen",
+    Sex == "Girl",
+    Year >= 2008,
+    Year <= 2017
+  ) %>%
+  select(Year, country, prop) %>%
+  pivot_wider(
+    names_from = country,
+    values_from = prop
+  )
+
+karen_10_years
+```
+```{r}
+## Correlation between US and each country
+
+cor(karen_10_years$`United States`,
+    karen_10_years$`England/Wales`,
+    use = "complete.obs")
+
+cor(karen_10_years$`United States`,
+    karen_10_years$Scotland,
+    use = "complete.obs")
+
+cor(karen_10_years$`United States`,
+    karen_10_years$`Northern Ireland`,
+    use = "complete.obs")
+```
+
+```{r}
+## Correlations with US Karen data, 2008-2017
+
+karen_10_years <- full_data %>%
+  filter(
+    Name == "Karen",
+    Sex == "Girl",
+    Year >= 2008,
+    Year <= 2017
+  ) %>%
+  select(Year, country, prop) %>%
+  pivot_wider(
+    names_from = country,
+    values_from = prop
+  )
+
+correlations <- tibble(
+  Country = c(
+    "England/Wales",
+    "Scotland",
+    "Northern Ireland"
+  ),
+  Correlation = c(
+    cor(
+      karen_10_years$`United States`,
+      karen_10_years$`England/Wales`,
+      use = "complete.obs"
+    ),
+    cor(
+      karen_10_years$`United States`,
+      karen_10_years$Scotland,
+      use = "complete.obs"
+    ),
+    cor(
+      karen_10_years$`United States`,
+      karen_10_years$`Northern Ireland`,
+      use = "complete.obs"
+    )
+  )
+)
+
+correlations
+```
+
