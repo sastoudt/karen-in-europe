@@ -40,22 +40,51 @@ england_wales_karens = karens %>%
            name == "Karen")
 ```
 
-# Visualize and Find Correlation For Each in Numbers
+# Get Correlation
+
+## US and England/Wales karens
+
+```{r}
+getCorrelation = function(us_karen_data, other_karen_data) {
+  karen_combined = help_line_up(other_karen_data, us_karen_data)
+  
+  us_karen = us_karen_data <- karen_combined %>%
+  filter(country == "United States") %>%
+  arrange(year)
+  
+  other_karen = karen_combined %>%
+    filter(country == unique(other_karen_data$country)) %>%
+    arrange(year)
+  
+  years <- intersect(us_karen$year, other_karen$year)
+
+  us_karen = us_karen %>% 
+    filter(year %in% years) %>% arrange(year)
+  
+  other_karen = other_karen %>% 
+    filter(year %in% years) %>% 
+    arrange(year)
+  
+  # sanity check before correlating
+  identical(us_karen$year, other_karen$year)  # should be TRUE
+  
+  # Step 4: run the lag correlation
+  helperCorLagKaren(other_karen, lagN = 30, us_karen)
+}
+
+getCorrelation(england_wales_karens, us_karens)
+getCorrelation(ni_karens, us_karens)
+getCorrelation(scotland_karens, us_karens)
+```
+
+# Visualize
 
 ```{r}
 us_karens = us_karens %>%
   filter(us_karens$year %in% 1974:2024)
 
-range(us_karens$year)
+range(us_karens$year) 
 ```
-
-# Find Correlation
-
-```{r}
-
-```
-
-# Visualize
 
 ```{r}
 ggplot() +
@@ -71,12 +100,6 @@ ggplot() +
        x = "Year", 
        title = "Number of Births by Year for Female Karens from 1974 to 2024 (n = 223)") +
   theme_minimal()
-```
-
-# Find Correlation 
-
-```{r}
-
 ```
 
 
