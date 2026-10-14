@@ -3,3 +3,103 @@ title: "connor"
 format: html
 ---
 
+# Task 
+
+Find the correlation with US Karen data and the other three countries in the future 30 years. (assume only female karens)
+
+# Imports
+
+```{r}
+library(tidyverse)
+source("karen-helper-fns.R")
+
+karens = read_csv("full-names-data-nice.csv")
+```
+
+# Get Only Female Karens for US and Europe
+
+```{r}
+us_karens = karens %>%
+  filter(country == "United States" &
+           sex == "Girl" &
+           name == "Karen")
+
+ni_karens = karens %>%
+  filter(country == "ni" &
+           sex == "Girl" &
+           name == "Karen")
+
+scotland_karens = karens %>%
+  filter(country == "scotland" &
+           sex == "Girl" &
+           name == "Karen")
+
+england_wales_karens = karens %>%
+  filter(country == "England/Wales" &
+           sex == "Girl" &
+           name == "Karen")
+```
+
+# Get Correlation
+
+## US and England/Wales karens
+
+```{r}
+getCorrelation = function(us_karen_data, other_karen_data) {
+  karen_combined = help_line_up(other_karen_data, us_karen_data)
+  
+  us_karen = us_karen_data <- karen_combined %>%
+  filter(country == "United States") %>%
+  arrange(year)
+  
+  other_karen = karen_combined %>%
+    filter(country == unique(other_karen_data$country)) %>%
+    arrange(year)
+  
+  years <- intersect(us_karen$year, other_karen$year)
+
+  us_karen = us_karen %>% 
+    filter(year %in% years) %>% arrange(year)
+  
+  other_karen = other_karen %>% 
+    filter(year %in% years) %>% 
+    arrange(year)
+  
+  # sanity check before correlating
+  identical(us_karen$year, other_karen$year)  # should be TRUE
+  
+  # Step 4: run the lag correlation
+  helperCorLagKaren(other_karen, lagN = 30, us_karen)
+}
+
+getCorrelation(england_wales_karens, us_karens)
+getCorrelation(ni_karens, us_karens)
+getCorrelation(scotland_karens, us_karens)
+```
+
+# Visualize
+
+```{r}
+us_karens = us_karens %>%
+  filter(us_karens$year %in% 1974:2024)
+
+range(us_karens$year) 
+```
+
+```{r}
+ggplot() +
+  geom_point(data = us_karens, aes(x = year, y = number, color = "United States")) +
+  geom_point(data = scotland_karens, aes(x = year, y = number, color = "Scotland")) + 
+  geom_point(data = england_wales_karens, aes(x = year, y = number, color = "England & Wales")) + 
+  geom_point(data = ni_karens, aes(x = year, y = number, color = "Northern Ireland")) +
+  scale_color_manual(
+    values = c("United States" = "red", "Scotland" = "blue", "England & Wales" = "green", "Northern Ireland" = "orange")
+  ) +
+  labs(color = "Place of Birth", 
+       y = "Number of Births",
+       x = "Year", 
+       title = "Number of Births by Year for Female Karens from 1974 to 2024 (n = 223)") +
+  theme_minimal()
+```
+
+
